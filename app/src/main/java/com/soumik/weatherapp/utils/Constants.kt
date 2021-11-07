@@ -7,5 +7,5 @@ package com.soumik.weatherapp.utils
 //
 
 object Constants {
-    const val BASE_URL = "https://"
+    const val BASE_URL = "https://google.com"
 }
