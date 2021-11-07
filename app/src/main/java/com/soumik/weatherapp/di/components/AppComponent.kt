@@ -2,7 +2,7 @@ package com.soumik.weatherapp.di.components
 
 import android.content.Context
 import com.soumik.weatherapp.di.modules.NetworkModule
-import com.soumik.weatherapp.home.ui.HomeActivity
+import com.soumik.weatherapp.ui.home.ui.HomeActivity
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
