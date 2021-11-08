@@ -1,5 +1,6 @@
 package com.soumik.weatherapp.ui.details
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -12,6 +13,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.soumik.weatherapp.R
 import com.soumik.weatherapp.databinding.ActivityDetailsBinding
 import com.soumik.weatherapp.ui.home.data.models.Data
+import com.soumik.weatherapp.utils.convertKelvinToCelsius
 
 class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -37,6 +39,21 @@ class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        initViews()
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun initViews() {
+        binding.apply {
+            tvWeatherName.text = mWeatherData?.name
+            tvWeatherDesc.text = mWeatherData?.weather!![0].description
+            tvWeatherHumidity.text = "Humidity: ${mWeatherData?.main?.humidity}"
+            tvWeatherWind.text = "Wind Speed: ${mWeatherData?.wind?.speed}"
+            tvWeatherMaxTemp.text = "Max. Temp: ${mWeatherData?.main?.tempMax?.convertKelvinToCelsius()}°C"
+            tvWeatherMinTemp.text = "Min. Temp: ${mWeatherData?.main?.tempMin?.convertKelvinToCelsius()}°C"
+            tvTemp.text = "${mWeatherData?.main?.temp?.convertKelvinToCelsius()}°C"
+        }
     }
 
     /**

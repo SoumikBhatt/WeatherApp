@@ -12,4 +12,6 @@ object Constants {
 
     const val NO_NETWORK_CONNECTION = "Internet connection not found, please check your internet connection."
     const val GENERIC_ERROR_MESSAGE = "Something went wrong! please try again."
+
+    const val ICON_DOWNLOAD_URL = "http://openweathermap.org/img/w/"
 }
