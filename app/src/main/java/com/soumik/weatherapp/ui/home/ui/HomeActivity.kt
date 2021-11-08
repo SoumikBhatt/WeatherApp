@@ -1,5 +1,6 @@
 package com.soumik.weatherapp.ui.home.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.soumik.weatherapp.app.WeatherApp
 import com.soumik.weatherapp.databinding.ActivityHomeBinding
+import com.soumik.weatherapp.ui.details.DetailsActivity
 import com.soumik.weatherapp.utils.Status
+import com.soumik.weatherapp.utils.showSnackBar
 import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity() {
@@ -26,6 +29,8 @@ class HomeActivity : AppCompatActivity() {
     private val mCityListAdapter : CityListAdapter by lazy {
         CityListAdapter {
             Log.d(TAG, "Lat: ${it.coord?.lat}: Ln: ${it.coord?.lon} ")
+            startActivity(Intent(this,DetailsActivity::class.java)
+                .putExtra(DetailsActivity.WEATHER_DATA,it))
         }
     }
 
@@ -89,6 +94,7 @@ class HomeActivity : AppCompatActivity() {
                     
                     Status.ERROR -> {
                         Log.e(TAG, "setUpObservers: Error: ${it.message}")
+                        showSnackBar(binding.root,it.message!!)
                     }
                     
                     Status.LOADING -> {

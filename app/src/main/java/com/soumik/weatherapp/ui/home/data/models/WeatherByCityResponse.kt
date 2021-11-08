@@ -1,5 +1,7 @@
 package com.soumik.weatherapp.ui.home.data.models
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 
 //
@@ -18,6 +20,7 @@ data class WeatherByCityResponse(
     var message: String?
 )
 
+@Parcelize
 data class Data(
     @SerializedName("clouds")
     var clouds: Clouds?,
@@ -31,30 +34,33 @@ data class Data(
     var main: Main?,
     @SerializedName("name")
     var name: String?,
-    @SerializedName("rain")
-    var rain: Any?,
-    @SerializedName("snow")
-    var snow: Any?,
+//    @SerializedName("rain")
+//    var rain: Any?,
+//    @SerializedName("snow")
+//    var snow: Any?,
     @SerializedName("sys")
     var sys: Sys?,
     @SerializedName("weather")
     var weather: List<Weather>?,
     @SerializedName("wind")
     var wind: Wind?
-)
+) : Parcelable
 
+@Parcelize
 data class Clouds(
     @SerializedName("all")
     var all: Int?
-)
+) : Parcelable
 
+@Parcelize
 data class Coord(
     @SerializedName("lat")
     var lat: Double?,
     @SerializedName("lon")
     var lon: Double?
-)
+) : Parcelable
 
+@Parcelize
 data class Main(
     @SerializedName("feels_like")
     var feelsLike: Double?,
@@ -72,13 +78,15 @@ data class Main(
     var tempMax: Double?,
     @SerializedName("temp_min")
     var tempMin: Double?
-)
+) : Parcelable
 
+@Parcelize
 data class Sys(
     @SerializedName("country")
     var country: String?
-)
+) : Parcelable
 
+@Parcelize
 data class Weather(
     @SerializedName("description")
     var description: String?,
@@ -88,11 +96,12 @@ data class Weather(
     var id: Int?,
     @SerializedName("main")
     var main: String?
-)
+) : Parcelable
 
+@Parcelize
 data class Wind(
     @SerializedName("deg")
     var deg: Int?,
     @SerializedName("speed")
     var speed: Double?
-)
+) : Parcelable

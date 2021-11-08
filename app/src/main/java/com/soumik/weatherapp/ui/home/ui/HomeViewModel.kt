@@ -50,7 +50,13 @@ class HomeViewModel @Inject constructor(private val repository: WeatherRepositor
 
                     if (response.isSuccessful && response.code()==200) {
                         _weatherInfo.value = Resource.success(response.body())
-                    } else _weatherInfo.value = Resource.error(Constants.GENERIC_ERROR_MESSAGE)
+                    } else {
+                        try {
+                            _weatherInfo.value = Resource.error(response.body()?.message)
+                        } catch (e: Exception) {
+                            _weatherInfo.value = Resource.error(Constants.GENERIC_ERROR_MESSAGE)
+                        }
+                    }
 
                 } catch (e:Exception) {
                     Log.e(TAG, "fetchWeatherByCity: Exception: ${e.localizedMessage}")
