@@ -60,7 +60,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     // lifecycles
-    def lifecycle_version = "2.4.0-beta01"
+    def lifecycle_version = "2.4.0"
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     // LiveData
@@ -68,6 +68,12 @@ dependencies {
 
     // coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+
+    // image loader
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //google play location
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
 
     testImplementation 'junit:junit:4.+'

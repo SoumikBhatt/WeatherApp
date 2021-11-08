@@ -1,14 +1,16 @@
 package com.soumik.weatherapp.ui.home.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.soumik.weatherapp.ui.home.data.models.LocationData
 import com.soumik.weatherapp.ui.home.data.models.WeatherByCityResponse
+import com.soumik.weatherapp.ui.home.data.repository.LocationRepository
 import com.soumik.weatherapp.ui.home.data.repository.WeatherRepository
 import com.soumik.weatherapp.utils.Connectivity
 import com.soumik.weatherapp.utils.Constants
+import com.soumik.weatherapp.utils.RequestCompleteListener
 import com.soumik.weatherapp.utils.Resource
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,18 +21,41 @@ import javax.inject.Inject
 // Copyright (c) 2021 Soumik Bhattacharjee. All rights reserved.
 //
 
-class HomeViewModel @Inject constructor(private val repository: WeatherRepository, private val connectivity: Connectivity) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val repository: WeatherRepository,
+    private val locationRepository: LocationRepository,
+    private val connectivity: Connectivity
+) : ViewModel() {
 
     // this live data will store the response fetched from the remote data source
     private var _weatherInfo = MutableLiveData<Resource<WeatherByCityResponse>>()
-    val weatherInfo : LiveData<Resource<WeatherByCityResponse>> get() = _weatherInfo
+    val weatherInfo: LiveData<Resource<WeatherByCityResponse>> get() = _weatherInfo
 
     // live data for checking internet connection
     private var _isInternetAvailable = MutableLiveData<Boolean>()
-    val isInternetAvailable : LiveData<Boolean> get() = _isInternetAvailable
+    val isInternetAvailable: LiveData<Boolean> get() = _isInternetAvailable
 
-    fun testLog() {
-        repository.testLog()
+    // live data for storing location of the user
+    private var _locationLiveData = MutableLiveData<Resource<LocationData>>()
+    val locationLiveData : LiveData<Resource<LocationData>> get() = _locationLiveData
+
+    /**
+     * getting user current location and storing
+     * the [LocationData] in a liveData
+     * which will be observed from [HomeActivity]
+     */
+    fun getCurrentLocation() {
+
+        locationRepository.getUserCurrentLocation(object : RequestCompleteListener<LocationData>{
+            override fun onRequestCompleted(data: LocationData) {
+                _locationLiveData.postValue(Resource.success(data))
+            }
+
+            override fun onRequestFailed(errorMessage: String?) {
+                _locationLiveData.postValue(Resource.error(errorMessage))
+            }
+
+        })
     }
 
     /**
@@ -38,7 +63,7 @@ class HomeViewModel @Inject constructor(private val repository: WeatherRepositor
      * and storing the response in a liveData
      * which will be observed from [HomeActivity]
      */
-    fun fetchWeatherByCity(lat:String, lon:String, count:String) {
+    fun fetchWeatherByCity(lat: String, lon: String, count: String) {
         _weatherInfo.postValue(Resource.loading())
 
         if (connectivity.hasInternetConnection()) {
@@ -48,7 +73,7 @@ class HomeViewModel @Inject constructor(private val repository: WeatherRepositor
                 try {
                     val response = repository.fetchWeatherByCity(lat, lon, count)
 
-                    if (response.isSuccessful && response.code()==200) {
+                    if (response.isSuccessful && response.code() == 200) {
                         _weatherInfo.value = Resource.success(response.body())
                     } else {
                         try {
@@ -58,8 +83,7 @@ class HomeViewModel @Inject constructor(private val repository: WeatherRepositor
                         }
                     }
 
-                } catch (e:Exception) {
-                    Log.e(TAG, "fetchWeatherByCity: Exception: ${e.localizedMessage}")
+                } catch (e: Exception) {
                     _weatherInfo.value = Resource.error(Constants.GENERIC_ERROR_MESSAGE)
                 }
             }
