@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.soumik.weatherapp.app.WeatherApp
 import com.soumik.weatherapp.databinding.ActivityHomeBinding
 import com.soumik.weatherapp.ui.details.DetailsActivity
@@ -117,7 +118,10 @@ class HomeActivity : AppCompatActivity() {
 
             isInternetAvailable.observe(this@HomeActivity,{
                 if (!it) {
-                    showSnackBar(binding.root,Constants.NO_NETWORK_CONNECTION)
+                    binding.progressCircular.visibility = View.GONE
+                    showSnackBar(binding.root,Constants.NO_NETWORK_CONNECTION,Snackbar.LENGTH_LONG)
+                } else {
+                    binding.progressCircular.visibility = View.VISIBLE
                 }
             })
 

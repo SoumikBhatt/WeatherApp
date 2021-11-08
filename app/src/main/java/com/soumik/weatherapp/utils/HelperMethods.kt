@@ -18,7 +18,7 @@ fun Double.convertKelvinToCelsius(): Double {
     return String.format("%.2f", this.minus(273.15)).toDouble()
 }
 
-fun showSnackBar(root: View, message: String) {
-    Snackbar.make(root, message, Snackbar.LENGTH_SHORT).show()
+fun showSnackBar(root: View, message: String, length: Int = Snackbar.LENGTH_SHORT) {
+    Snackbar.make(root, message, length).show()
 
 }
