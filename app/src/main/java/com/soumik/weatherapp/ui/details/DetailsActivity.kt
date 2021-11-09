@@ -13,18 +13,19 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.soumik.weatherapp.R
 import com.soumik.weatherapp.databinding.ActivityDetailsBinding
 import com.soumik.weatherapp.ui.home.data.models.Data
+import com.soumik.weatherapp.utils.Constants
 import com.soumik.weatherapp.utils.convertKelvinToCelsius
+import com.squareup.picasso.Picasso
 
 class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     companion object {
-        private const val TAG = "DetailsActivity"
         const val WEATHER_DATA = "WeatherData"
     }
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityDetailsBinding
-    private val mWeatherData : Data? by lazy {
+    private val mWeatherData: Data? by lazy {
         intent!!.getParcelableExtra(WEATHER_DATA)
     }
 
@@ -50,9 +51,15 @@ class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             tvWeatherDesc.text = mWeatherData?.weather!![0].description
             tvWeatherHumidity.text = "Humidity: ${mWeatherData?.main?.humidity}"
             tvWeatherWind.text = "Wind Speed: ${mWeatherData?.wind?.speed}"
-            tvWeatherMaxTemp.text = "Max. Temp: ${mWeatherData?.main?.tempMax?.convertKelvinToCelsius()}°C"
-            tvWeatherMinTemp.text = "Min. Temp: ${mWeatherData?.main?.tempMin?.convertKelvinToCelsius()}°C"
+            tvWeatherMaxTemp.text =
+                "Max. Temp: ${mWeatherData?.main?.tempMax?.convertKelvinToCelsius()}°C"
+            tvWeatherMinTemp.text =
+                "Min. Temp: ${mWeatherData?.main?.tempMin?.convertKelvinToCelsius()}°C"
             tvTemp.text = "${mWeatherData?.main?.temp?.convertKelvinToCelsius()}°C"
+            Picasso.get()
+                .load("${Constants.ICON_DOWNLOAD_URL}${mWeatherData?.weather!![0].icon}.png")
+                .into(binding.ivWeatherDesc)
+
         }
     }
 
@@ -60,7 +67,7 @@ class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * we are adding a marker in the selected city coordinates.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -71,7 +78,7 @@ class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         val mLatLng = LatLng(mWeatherData?.coord?.lat!!, mWeatherData?.coord?.lon!!)
         mMap.addMarker(MarkerOptions().position(mLatLng).title("${mWeatherData?.name}"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng,12f))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 12f))
         mMap
     }
 }

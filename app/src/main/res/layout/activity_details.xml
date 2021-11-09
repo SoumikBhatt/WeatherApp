@@ -108,9 +108,9 @@
                     tools:text="25°C"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_weather_desc"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:tint="@color/black"
                     tools:srcCompat="@drawable/ic_sunny_demo"/>
 
             </LinearLayout>
