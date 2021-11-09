@@ -2,6 +2,7 @@ package com.soumik.weatherapp.di.components
 
 import android.content.Context
 import com.soumik.weatherapp.di.modules.NetworkModule
+import com.soumik.weatherapp.notification.NotificationService
 import com.soumik.weatherapp.ui.home.ui.HomeActivity
 import dagger.BindsInstance
 import dagger.Component
@@ -22,4 +23,5 @@ interface AppComponent {
     }
 
     fun inject (homeActivity: HomeActivity)
+    fun inject (notificationService: NotificationService)
 }

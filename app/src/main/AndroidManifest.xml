@@ -21,7 +21,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CustomSplashScreenTheme"
         android:usesCleartextTraffic="true">
+        <service
+            android:name=".notification.NotificationService"
+            android:exported="false"/>
 
+        <receiver
+            android:name=".notification.NotificationReceiver"
+            android:enabled="true"
+            android:exported="false" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -37,8 +44,8 @@
         <activity
             android:name=".ui.details.DetailsActivity"
             android:exported="true"
-            android:theme="@style/Theme.WeatherApp"
-            android:label="@string/title_activity_details" />
+            android:label="@string/title_activity_details"
+            android:theme="@style/Theme.WeatherApp" />
         <activity
             android:name=".ui.home.ui.HomeActivity"
             android:exported="true">

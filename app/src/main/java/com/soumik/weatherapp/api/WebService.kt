@@ -1,8 +1,11 @@
 package com.soumik.weatherapp.api
 
+import android.util.Log
 import com.soumik.weatherapp.ui.home.data.models.WeatherByCityResponse
+import com.soumik.weatherapp.ui.home.data.models.WeatherByLocationResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 //
@@ -19,5 +22,12 @@ interface WebService {
         @Query("lon") lon : String,
         @Query("cnt") cnt : String,
     ) : Response<WeatherByCityResponse>
+
+
+    @GET("weather")
+    suspend fun weatherByLocation(
+        @Query("lat") lat : String,
+        @Query("lon") lon : String,
+    ) : Response<WeatherByLocationResponse>
 
 }

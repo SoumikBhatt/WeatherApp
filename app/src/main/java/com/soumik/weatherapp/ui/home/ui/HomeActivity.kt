@@ -2,10 +2,13 @@ package com.soumik.weatherapp.ui.home.ui
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +21,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.soumik.weatherapp.R
 import com.soumik.weatherapp.app.WeatherApp
 import com.soumik.weatherapp.databinding.ActivityHomeBinding
+import com.soumik.weatherapp.notification.NotificationReceiver
+import com.soumik.weatherapp.notification.NotificationService
 import com.soumik.weatherapp.ui.details.DetailsActivity
 import com.soumik.weatherapp.utils.*
+import java.util.*
 import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity() {
@@ -60,6 +66,8 @@ class HomeActivity : AppCompatActivity() {
             }
 
         })
+
+        scheduleNotification()
 
     }
 
@@ -175,10 +183,10 @@ class HomeActivity : AppCompatActivity() {
 
             shouldShowRequestPermissionRationale() -> requestLocationPermission()
 
-            !shouldShowRequestPermissionRationale() -> {
-                binding.progressCircular.visibility = View.GONE
-                openSettingsDialog()
-            }
+//            !shouldShowRequestPermissionRationale() -> {
+//                binding.progressCircular.visibility = View.GONE
+//                openSettingsDialog()
+//            }
 
             else -> requestLocationPermission()
         }
@@ -259,5 +267,33 @@ class HomeActivity : AppCompatActivity() {
                 invokeLocationAction()
             }
         }
+    }
+
+    /**
+     * scheduling notification service at 10 AM
+     */
+    private fun scheduleNotification() {
+        Log.d("TAG", "scheduleNotification: ")
+        val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent =Intent(this,NotificationReceiver::class.java).let {
+            PendingIntent.getBroadcast(this,0,it,PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY,10)
+            set(Calendar.MINUTE,0)
+        }
+
+        if (calendar.timeInMillis < System.currentTimeMillis()) {
+            calendar.add(Calendar.DATE, 1)
+        }
+
+        alarmManager.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            8640000,
+            alarmIntent
+        )
     }
 }
