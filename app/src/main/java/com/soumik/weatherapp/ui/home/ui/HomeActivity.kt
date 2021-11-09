@@ -10,19 +10,15 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.soumik.weatherapp.R
 import com.soumik.weatherapp.app.WeatherApp
 import com.soumik.weatherapp.databinding.ActivityHomeBinding
 import com.soumik.weatherapp.notification.NotificationReceiver
-import com.soumik.weatherapp.notification.NotificationService
 import com.soumik.weatherapp.ui.details.DetailsActivity
 import com.soumik.weatherapp.utils.*
 import java.util.*
@@ -79,7 +75,6 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
 
         setUpObservers()
         setUpRecyclerView()
@@ -183,11 +178,6 @@ class HomeActivity : AppCompatActivity() {
 
             shouldShowRequestPermissionRationale() -> requestLocationPermission()
 
-//            !shouldShowRequestPermissionRationale() -> {
-//                binding.progressCircular.visibility = View.GONE
-//                openSettingsDialog()
-//            }
-
             else -> requestLocationPermission()
         }
     }
@@ -238,26 +228,6 @@ class HomeActivity : AppCompatActivity() {
             this,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
-
-    /**
-     * prompting user to provide location permission
-     */
-    private fun openSettingsDialog() {
-        val dialog = MaterialAlertDialogBuilder(this).create()
-        val view = layoutInflater.inflate(R.layout.dialog_enable_location_permission, null)
-        view?.apply {
-            findViewById<Button>(R.id.dialog_btn_cancel).setOnClickListener {
-                dialog.dismiss()
-            }
-            findViewById<Button>(R.id.dialog_btn_go_to_settings).setOnClickListener {
-                val intent = createAppSettingsIntent()
-                startActivity(intent)
-                dialog.dismiss()
-            }
-        }
-        dialog.setView(view)
-        dialog.show()
-    }
 
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
