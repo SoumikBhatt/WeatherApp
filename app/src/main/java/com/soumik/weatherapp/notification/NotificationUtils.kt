@@ -7,11 +7,16 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.soumik.weatherapp.R
 import com.soumik.weatherapp.ui.home.ui.HomeActivity
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 
 
 class NotificationUtils(_context: Context) : ContextWrapper(_context) {
@@ -28,9 +33,13 @@ class NotificationUtils(_context: Context) : ContextWrapper(_context) {
     private val pendingIntent = PendingIntent.getActivity(_context, 0,dismissIntent,PendingIntent.FLAG_CANCEL_CURRENT)
 
 
-    fun setNotification(title: String?, body: String?): NotificationCompat.Builder {
+    fun setNotification(title: String?, body: String?, imageUrl:String?): NotificationCompat.Builder {
+
+        val bitmap = getBitmapFromURL(imageUrl!!)
+
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
+            .setLargeIcon(bitmap)
             .setContentTitle(title)
             .setContentText(body).setStyle(NotificationCompat.BigTextStyle()
                 .bigText(body))
@@ -39,6 +48,26 @@ class NotificationUtils(_context: Context) : ContextWrapper(_context) {
             .setContentIntent(pendingIntent)
             .setFullScreenIntent(pendingIntent,true)
             .setPriority(NotificationCompat.PRIORITY_MAX)
+
+    }
+
+    /**
+     * Downloading push notification image before displaying it in
+     * the notification tray
+     */
+    private fun getBitmapFromURL(strURL: String): Bitmap? {
+        return try {
+            val url = URL(strURL)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connect()
+            val input = connection.inputStream
+            BitmapFactory.decodeStream(input)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+
     }
 
     private fun createChannel() {

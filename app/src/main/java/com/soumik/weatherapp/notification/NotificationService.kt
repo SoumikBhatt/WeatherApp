@@ -7,6 +7,7 @@ import com.soumik.weatherapp.api.WebService
 import com.soumik.weatherapp.app.WeatherApp
 import com.soumik.weatherapp.ui.home.data.models.LocationData
 import com.soumik.weatherapp.ui.home.data.repository.LocationRepository
+import com.soumik.weatherapp.utils.Constants
 import com.soumik.weatherapp.utils.RequestCompleteListener
 import com.soumik.weatherapp.utils.convertKelvinToCelsius
 import kotlinx.coroutines.*
@@ -55,7 +56,7 @@ class NotificationService : IntentService("NotificationService") {
     private fun showNotification() {
         Log.d(TAG, "showNotification: Temp: $temperature")
         val notificationUtils = NotificationUtils(this)
-        val builder = notificationUtils.setNotification("WeatherAPP","Current Temperature: ${temperature?.convertKelvinToCelsius()}°C")
+        val builder = notificationUtils.setNotification("WeatherAPP","Current Temperature: ${temperature?.convertKelvinToCelsius()}°C","${Constants.ICON_DOWNLOAD_URL}${icon}.png")
         notificationUtils.manager?.notify(999,builder.build())
     }
 
