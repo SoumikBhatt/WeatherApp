@@ -34,6 +34,11 @@ class DetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.tbDetails)
+        binding.tbDetails.setNavigationOnClickListener {
+            onBackPressed()
+            finish()
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager

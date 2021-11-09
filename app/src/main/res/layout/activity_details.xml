@@ -7,9 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.details.DetailsActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        map:layout_constraintStart_toStartOf="parent"
+        map:titleCentered="true"
+        map:titleTextColor="@color/white"
+        map:title="@string/app_name"
+        map:navigationIcon="@drawable/ic_arrow_back_24"
+        map:navigationIconTint="@color/white"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/tb_details"/>
+
     <fragment
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        map:layout_constraintTop_toBottomOf="@id/tb_details"
+        map:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
