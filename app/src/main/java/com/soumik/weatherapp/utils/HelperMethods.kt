@@ -1,6 +1,9 @@
 package com.soumik.weatherapp.utils
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 
@@ -20,5 +23,10 @@ fun Double.convertKelvinToCelsius(): Double {
 
 fun showSnackBar(root: View, message: String, length: Int = Snackbar.LENGTH_SHORT) {
     Snackbar.make(root, message, length).show()
+}
 
+
+fun Context.createAppSettingsIntent() = Intent().apply {
+    action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+    data = Uri.fromParts("package", this@createAppSettingsIntent.packageName, null)
 }

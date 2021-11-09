@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="title_activity_details">DetailsActivity</string>
+    <string name="btn_go_to_settings">Go to Settings</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="title_enable_location_permissions">Enable Location Permissions</string>
+    <string name="message_permission">Please enable your location permissions to show weather info according to your location.</string>
 </resources>
