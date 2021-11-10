@@ -46,6 +46,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textview.MaterialTextView
+                android:textAppearance="@style/TitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_weather_name"
@@ -53,58 +54,57 @@
                 map:layout_constraintTop_toTopOf="parent"
                 tools:text="Washington DC"
                 android:textStyle="bold"
-                android:textColor="@color/black"
                 android:textSize="16sp"/>
 
             <com.google.android.material.textview.MaterialTextView
+                android:textAppearance="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_weather_desc"
                 android:layout_marginTop="5dp"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toBottomOf="@id/tv_weather_name"
-                tools:text="Clear Sky"
-                android:textColor="@color/text_color"/>
+                tools:text="Clear Sky"/>
 
             <com.google.android.material.textview.MaterialTextView
+                android:textAppearance="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_weather_humidity"
                 android:layout_marginTop="5dp"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toBottomOf="@id/tv_weather_desc"
-                tools:text="Humidity: 70"
-                android:textColor="@color/text_color"/>
+                tools:text="Humidity: 70"/>
 
             <com.google.android.material.textview.MaterialTextView
+                android:textAppearance="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_weather_wind"
                 android:layout_marginTop="5dp"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toBottomOf="@id/tv_weather_humidity"
-                tools:text="Wind Speed: 5.52"
-                android:textColor="@color/text_color"/>
+                tools:text="Wind Speed: 5.52"/>
 
             <com.google.android.material.textview.MaterialTextView
+                android:textAppearance="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_weather_max_temp"
                 android:layout_marginTop="5dp"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toBottomOf="@id/tv_weather_wind"
-                tools:text="Max. Temp: 38°C"
-                android:textColor="@color/text_color"/>
+                tools:text="Max. Temp: 38°C"/>
 
             <com.google.android.material.textview.MaterialTextView
+                android:textAppearance="@style/NormalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_weather_min_temp"
                 android:layout_marginTop="5dp"
                 map:layout_constraintStart_toStartOf="parent"
                 map:layout_constraintTop_toBottomOf="@id/tv_weather_max_temp"
-                tools:text="Min. Temp: 27°C"
-                android:textColor="@color/text_color"/>
+                tools:text="Min. Temp: 27°C"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -116,11 +116,11 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
+                    android:textAppearance="@style/TitleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tv_temp"
                     android:textSize="20sp"
-                    android:textColor="@color/black"
                     tools:text="25°C"/>
 
                 <androidx.appcompat.widget.AppCompatImageView

@@ -22,4 +22,13 @@
         <item name="windowSplashScreenAnimationDuration">300</item>
         <item name="postSplashScreenTheme">@style/Theme.WeatherApp</item>
     </style>
+
+    <style name="TitleText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="NormalText" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#424242</item>
+    </style>
+
 </resources>

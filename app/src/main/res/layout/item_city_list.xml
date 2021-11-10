@@ -3,33 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
 
     <com.google.android.material.textview.MaterialTextView
+        android:textAppearance="@style/TitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_city_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text = "Dhaka"
-        android:textSize="16sp"
-        android:textColor="@color/black"/>
+        android:textSize="16sp"/>
 
     <com.google.android.material.textview.MaterialTextView
+        android:textAppearance="@style/NormalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_weather_desc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_city_name"
         tools:text="Cloudy"
-        android:textColor="@color/text_color"
         android:textSize="14sp"
         android:layout_marginTop="5dp"/>
 
     <com.google.android.material.textview.MaterialTextView
+        android:textAppearance="@style/TitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_temp"
@@ -37,7 +37,6 @@
         app:layout_constraintTop_toTopOf="@id/tv_city_name"
         app:layout_constraintBottom_toBottomOf="@id/tv_weather_desc"
         android:textSize="20sp"
-        android:textColor="@color/black"
         tools:text="25°C"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
