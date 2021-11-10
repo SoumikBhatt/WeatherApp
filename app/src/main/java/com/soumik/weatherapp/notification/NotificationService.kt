@@ -27,6 +27,7 @@ class NotificationService : IntentService("NotificationService") {
 
     companion object {
         private const val TAG = "NotificationService"
+        private const val CHANNEL_ID = "Weather"
     }
 
     @Inject
@@ -48,7 +49,6 @@ class NotificationService : IntentService("NotificationService") {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             try {
 
-                val CHANNEL_ID = "Weather"
                 val channel = NotificationChannel(CHANNEL_ID, "Weather info", NotificationManager.IMPORTANCE_DEFAULT)
 
                 (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
