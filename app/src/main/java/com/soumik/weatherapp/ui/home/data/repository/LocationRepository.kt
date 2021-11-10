@@ -40,7 +40,7 @@ class LocationRepository @Inject constructor(var context: Context) {
     fun getUserCurrentLocation(callback: RequestCompleteListener<LocationData>) {
         fusedLocationClient.lastLocation.addOnSuccessListener {
             it.also {
-                callback.onRequestCompleted(setLocationData(it))
+                if (it!=null) callback.onRequestCompleted(setLocationData(it))
             }
         }.addOnFailureListener {
             callback.onRequestFailed(it.localizedMessage)

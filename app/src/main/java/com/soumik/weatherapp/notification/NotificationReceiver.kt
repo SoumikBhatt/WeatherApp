@@ -3,6 +3,7 @@ package com.soumik.weatherapp.notification
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 
 class NotificationReceiver : BroadcastReceiver() {
@@ -16,6 +17,19 @@ class NotificationReceiver : BroadcastReceiver() {
         Log.d(TAG, "onReceive: Triggered")
 
         val i = Intent(context,NotificationService::class.java)
-        context.startService(i)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+                context.startForegroundService(i)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        } else {
+            try {
+                context.startService(i)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
     }
 }

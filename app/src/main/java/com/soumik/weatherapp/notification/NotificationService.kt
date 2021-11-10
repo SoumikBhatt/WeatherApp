@@ -1,8 +1,13 @@
 package com.soumik.weatherapp.notification
 
 import android.app.IntentService
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.soumik.weatherapp.api.WebService
 import com.soumik.weatherapp.app.WeatherApp
 import com.soumik.weatherapp.ui.home.data.models.LocationData
@@ -39,6 +44,25 @@ class NotificationService : IntentService("NotificationService") {
         super.onCreate()
 
         (this.application as WeatherApp).appComponent.inject(this)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            try {
+
+                val CHANNEL_ID = "Weather"
+                val channel = NotificationChannel(CHANNEL_ID, "Weather info", NotificationManager.IMPORTANCE_DEFAULT)
+
+                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
+
+                val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("")
+                    .setContentText("").build()
+
+                startForeground(1, notification)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
     }
 
     override fun onHandleIntent(intent: Intent?) {
@@ -46,10 +70,6 @@ class NotificationService : IntentService("NotificationService") {
         locationRepository = LocationRepository(this)
 
         fetchCurrentLocation()
-
-//        if (temperature!=null) {
-//            showNotification()
-//        }
 
     }
 
