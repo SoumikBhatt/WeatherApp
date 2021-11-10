@@ -25,13 +25,13 @@ class NotificationService : IntentService("NotificationService") {
     }
 
     @Inject
-    lateinit var webService:WebService
+    lateinit var webService: WebService
 
     private lateinit var locationRepository: LocationRepository
-    private var latitude: Double ? =null
-    private var longitude: Double ? =null
-    private var temperature: Double ? =null
-    private var icon: String ? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
+    private var temperature: Double? = null
+    private var icon: String? = null
 
     private val ioScope = CoroutineScope(Dispatchers.IO + Job())
 
@@ -56,19 +56,23 @@ class NotificationService : IntentService("NotificationService") {
     private fun showNotification() {
         Log.d(TAG, "showNotification: Temp: $temperature")
         val notificationUtils = NotificationUtils(this)
-        val builder = notificationUtils.setNotification("WeatherAPP","Current Temperature: ${temperature?.convertKelvinToCelsius()}°C","${Constants.ICON_DOWNLOAD_URL}${icon}.png")
-        notificationUtils.manager?.notify(999,builder.build())
+        val builder = notificationUtils.setNotification(
+            "WeatherAPP",
+            "Current Temperature: ${temperature?.convertKelvinToCelsius()}°C",
+            "${Constants.ICON_DOWNLOAD_URL}${icon}.png"
+        )
+        notificationUtils.manager?.notify(999, builder.build())
     }
 
     private fun fetchCurrentLocation() {
-        locationRepository.getUserCurrentLocation(object : RequestCompleteListener<LocationData>{
+        locationRepository.getUserCurrentLocation(object : RequestCompleteListener<LocationData> {
             override fun onRequestCompleted(data: LocationData) {
                 Log.d(TAG, "onRequestCompleted: Lat: ${data.latitude}")
                 latitude = data.latitude
                 longitude = data.longitude
 
                 ioScope.launch {
-                    fetchWeatherByLocation(latitude,longitude)
+                    fetchWeatherByLocation(latitude, longitude)
                 }
 
             }
@@ -84,14 +88,20 @@ class NotificationService : IntentService("NotificationService") {
 
         withContext(Dispatchers.IO) {
             try {
-                val response = webService.weatherByLocation(latitude.toString(),longitude.toString())
+                val response =
+                    webService.weatherByLocation(latitude.toString(), longitude.toString())
 
-                if (response.isSuccessful && response.code()==200) {
+                if (response.isSuccessful && response.code() == 200) {
                     Log.d(TAG, "fetchWeatherByLocation: Success: ${response.body()?.name}")
                     val weatherInfo = response.body()
 
                     temperature = weatherInfo?.main?.temp
                     icon = weatherInfo?.weather!![0].icon
+
+                    Log.d(
+                        TAG,
+                        "fetchWeatherByLocation: Temp: ${weatherInfo.main?.temp?.convertKelvinToCelsius()} .. Condition: ${weatherInfo.weather[0].description}"
+                    )
 
                     showNotification()
 
@@ -99,7 +109,7 @@ class NotificationService : IntentService("NotificationService") {
                     Log.d(TAG, "fetchWeatherByLocation: Unsuccessful: ${response.message()}")
                 }
 
-            } catch (e:Exception) {
+            } catch (e: Exception) {
                 Log.e(TAG, "fetchWeatherByLocation: Exception: ${e.localizedMessage}")
             }
         }
