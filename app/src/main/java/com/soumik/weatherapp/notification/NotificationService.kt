@@ -49,9 +49,15 @@ class NotificationService : IntentService("NotificationService") {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             try {
 
-                val channel = NotificationChannel(CHANNEL_ID, "Weather info", NotificationManager.IMPORTANCE_DEFAULT)
+                val channel = NotificationChannel(
+                    CHANNEL_ID,
+                    "Weather info",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
 
-                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
+                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+                    channel
+                )
 
                 val notification = NotificationCompat.Builder(this, CHANNEL_ID)
                     .setContentTitle("")
@@ -87,7 +93,7 @@ class NotificationService : IntentService("NotificationService") {
     private fun fetchCurrentLocation() {
         locationRepository.getUserCurrentLocation(object : RequestCompleteListener<LocationData> {
             override fun onRequestCompleted(data: LocationData) {
-                Log.d(TAG, "onRequestCompleted: Lat: ${data.latitude}")
+                Log.d(TAG, "onRequestCompleted: Lat: ${data.latitude} Lon: ${data.longitude}")
                 latitude = data.latitude
                 longitude = data.longitude
 

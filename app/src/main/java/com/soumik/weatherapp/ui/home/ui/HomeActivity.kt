@@ -30,6 +30,8 @@ class HomeActivity : AppCompatActivity() {
     companion object {
         private const val LOCATION_REQUEST = 100
         private const val BACKGROUND_LOCATION_REQUEST = 101
+        private const val ANDROID_11_LOCATION_REQUEST = 102
+        private const val ANDROID_11_BACKGROUND_LOCATION_REQUEST = 103
     }
 
     private var isGPSEnabled = false
@@ -92,7 +94,6 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
-
     /**
      * setting up the recycler view with adapter
      * to show the city list
@@ -104,7 +105,6 @@ class HomeActivity : AppCompatActivity() {
             adapter = mCityListAdapter
         }
     }
-
     /**
      * observing the live data from [HomeViewModel]
      * and updating the UI accordingly
@@ -162,7 +162,6 @@ class HomeActivity : AppCompatActivity() {
             })
         }
     }
-
     /**
      * invoking the location action
      * will check
@@ -183,91 +182,110 @@ class HomeActivity : AppCompatActivity() {
             else -> requestLocationPermission()
         }
     }
-
     /**
      * requesting permission from user
      * for location
      */
     private fun requestLocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                ),
-                BACKGROUND_LOCATION_REQUEST
-            )
-        }
-        else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ),
-                LOCATION_REQUEST
-            )
+        when {
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    ),
+                    BACKGROUND_LOCATION_REQUEST
+                )
+            }
+            Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                    ),
+                    ANDROID_11_LOCATION_REQUEST
+                )
+            }
+            else -> {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ),
+                    LOCATION_REQUEST
+                )
+            }
         }
 
     }
-
     /**
      * fetching the current location of the user
      */
     private fun startLocationUpdate() {
         mHomeViewModel.getCurrentLocation()
     }
-
     /**
      * checking if the permission is granted
      */
     private fun isPermissionsGranted() : Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
-                    PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                    PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) ==
-                    PackageManager.PERMISSION_GRANTED
-        }
-        else {
-            return ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    ) == PackageManager.PERMISSION_GRANTED
+        when {
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> {
+                return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED
+            }
+            Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
+                return ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED
+            }
+            else -> {
+                return ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
+            }
         }
 
     }
-
-
     /**
      * requesting for permission if the user denied the permission once before
      */
     private fun shouldShowRequestPermissionRationale() : Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_BACKGROUND_LOCATION))
-        }
-        else {
-            ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) && ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
+        return when {
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.Q -> {
+                (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        && ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                        && ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_BACKGROUND_LOCATION))
+            }
+            Build.VERSION.SDK_INT > Build.VERSION_CODES.Q -> {
+                (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        && ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION))
+            }
+            else -> {
+                ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) && ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            }
         }
 
     }
-
-
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -278,9 +296,22 @@ class HomeActivity : AppCompatActivity() {
             BACKGROUND_LOCATION_REQUEST -> {
                 invokeLocationAction()
             }
+            ANDROID_11_LOCATION_REQUEST -> {
+                if (Build.VERSION.SDK_INT>Build.VERSION_CODES.Q) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        ),
+                        ANDROID_11_BACKGROUND_LOCATION_REQUEST
+                    )
+                }
+            }
+            ANDROID_11_BACKGROUND_LOCATION_REQUEST -> {
+                invokeLocationAction()
+            }
         }
     }
-
     /**
      * scheduling notification service at 10 AM
      */
